@@ -21,10 +21,10 @@ Each person owns **one module**. Every module has the same layers and must imple
 
 | # | Module | Owner | Your branch name |
 |---|---|---|---|
-| 1 | User Management | *(name)* | `module1-user-management` |
-| 2 | Parcel Management | *(name)* | `module2-parcel-management` |
-| 3 | Delivery & Tracking | *(name)* | `module3-delivery-tracking` |
-| 4 | Pickup Point & Notification | *(name)* | `module4-pickup-notification` |
+| 1 | User Management | Member 1 | `module1-user-management` |
+| 2 | Parcel Management | Member 2 | `module2-parcel-management` |
+| 3 | Delivery & Tracking | Member 3 | `module3-delivery-tracking` |
+| 4 | Pickup Point & Notification | Member 4 | `module4-pickup-notification` |
 
 Team leader: *(name)*
 
