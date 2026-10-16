@@ -1,0 +1,7 @@
+# Smart Campus Parcel System - Database Configuration Template
+# Copy this file to 'db.properties' in this directory and fill in your actual database credentials.
+# NOTE: 'db.properties' is ignored by Git and must NEVER be committed with real credentials.
+
+db.url=jdbc:mysql://localhost:3306/smart_campus_parcel?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+db.username=root
+db.password=YOUR_MYSQL_PASSWORD
