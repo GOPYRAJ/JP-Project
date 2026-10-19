@@ -78,7 +78,7 @@ public class Main {
 
     // Module placeholder methods (will be replaced by module UI menus)
     private static void userManagementMenu() {
-        System.out.println("\n>>> [Module 1] User Management: Module coming soon.\n");
+        new com.smartcampus.parcel.user.ui.UserMenu().show();
     }
 
     private static void parcelManagementMenu() {
