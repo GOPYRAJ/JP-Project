@@ -90,6 +90,6 @@ public class Main {
     }
 
     private static void pickupPointsAndNotificationsMenu() {
-        System.out.println("\n>>> [Module 4] Pickup Points & Notifications: Module coming soon.\n");
+        new com.smartcampus.parcel.pickup.ui.PickupMenu().show();
     }
 }
