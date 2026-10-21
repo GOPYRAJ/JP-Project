@@ -1,6 +1,10 @@
 package com.smartcampus.parcel;
 
 import com.smartcampus.parcel.config.DBConnection;
+import com.smartcampus.parcel.delivery.ui.DeliveryMenu;
+import com.smartcampus.parcel.parcel.ui.ParcelMenu;
+import com.smartcampus.parcel.pickup.ui.PickupMenu;
+import com.smartcampus.parcel.user.ui.UserMenu;
 import com.smartcampus.parcel.util.InputUtil;
 
 import java.sql.Connection;
@@ -76,20 +80,20 @@ public class Main {
         System.out.println("---------------------------------------------------------------");
     }
 
-    // Module placeholder methods (will be replaced by module UI menus)
+    // Module menu methods
     private static void userManagementMenu() {
-        new com.smartcampus.parcel.user.ui.UserMenu().show();
+        new UserMenu().show();
     }
 
     private static void parcelManagementMenu() {
-        System.out.println("\n>>> [Module 2] Parcel Management: Module coming soon.\n");
+        new ParcelMenu().show();
     }
 
     private static void deliveryTrackingMenu() {
-        new com.smartcampus.parcel.delivery.ui.DeliveryMenu().show();
+        new DeliveryMenu().show();
     }
 
     private static void pickupPointsAndNotificationsMenu() {
-        new com.smartcampus.parcel.pickup.ui.PickupMenu().show();
+        new PickupMenu().show();
     }
 }
