@@ -86,7 +86,7 @@ public class Main {
     }
 
     private static void deliveryTrackingMenu() {
-        System.out.println("\n>>> [Module 3] Delivery & Tracking: Module coming soon.\n");
+        new com.smartcampus.parcel.delivery.ui.DeliveryMenu().show();
     }
 
     private static void pickupPointsAndNotificationsMenu() {
