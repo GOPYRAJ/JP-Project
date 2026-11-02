@@ -38,7 +38,7 @@ public class UserMenu {
         boolean active = true;
         while (active) {
             printMenuHeader();
-            int choice = InputUtil.readInt("Enter your choice (0-7)", 0, 7);
+            int choice = InputUtil.readInt("Enter your choice (0-8)", 0, 8);
 
             switch (choice) {
                 case 1:
@@ -62,12 +62,15 @@ public class UserMenu {
                 case 7:
                     handleDeleteUser();
                     break;
+                case 8:
+                    handleLogin();
+                    break;
                 case 0:
                     active = false;
                     System.out.println("\nReturning to Main Menu...");
                     break;
                 default:
-                    System.out.println("Invalid selection. Please choose an option from 0 to 7.");
+                    System.out.println("Invalid selection. Please choose an option from 0 to 8.");
             }
         }
     }
@@ -86,6 +89,7 @@ public class UserMenu {
         System.out.println("  5. View by role");
         System.out.println("  6. Update user");
         System.out.println("  7. Delete user");
+        System.out.println("  8. Login user");
         System.out.println("  0. Back to Main Menu");
         System.out.println("---------------------------------------------------------------");
     }
@@ -260,6 +264,21 @@ public class UserMenu {
             System.out.println("\n>>> " + result);
         } else {
             System.out.println(">>> Deletion cancelled. No changes made.");
+        }
+    }
+
+    /**
+     * Handles authenticating a user by email and password.
+     */
+    private void handleLogin() {
+        System.out.println("\n--- [8] User Login ---");
+        String email = InputUtil.readString("Enter Email Address");
+        String password = InputUtil.readString("Enter Password");
+        User user = userService.login(email, password);
+        if (user != null) {
+            System.out.printf(">>> SUCCESS: Login successful! Welcome %s (%s).%n", user.getFullName(), user.getRole());
+        } else {
+            System.out.println(">>> ERROR: Login failed. Invalid email or password.");
         }
     }
 

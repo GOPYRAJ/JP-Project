@@ -42,7 +42,7 @@ public class PickupPointDAOImpl implements PickupPointDAO {
                 return true;
             }
         } catch (SQLException e) {
-            System.err.println("[PickupPointDAO] Error adding pickup point: " + e.getMessage());
+            System.err.println("Database error while saving the pickup point. Please try again.");
         }
         return false;
     }
@@ -64,7 +64,7 @@ public class PickupPointDAOImpl implements PickupPointDAO {
                 }
             }
         } catch (SQLException e) {
-            System.err.println("[PickupPointDAO] Error fetching pickup point by ID: " + e.getMessage());
+            System.err.println("Database error while retrieving pickup point. Please try again.");
         }
         return null;
     }
@@ -86,7 +86,7 @@ public class PickupPointDAOImpl implements PickupPointDAO {
                 }
             }
         } catch (SQLException e) {
-            System.err.println("[PickupPointDAO] Error fetching pickup point by name: " + e.getMessage());
+            System.err.println("Database error while retrieving pickup point. Please try again.");
         }
         return null;
     }
@@ -107,7 +107,7 @@ public class PickupPointDAOImpl implements PickupPointDAO {
                 list.add(mapRowToPickupPoint(rs));
             }
         } catch (SQLException e) {
-            System.err.println("[PickupPointDAO] Error fetching all pickup points: " + e.getMessage());
+            System.err.println("Database error while retrieving pickup points. Please try again.");
         }
         return list;
     }
@@ -128,7 +128,7 @@ public class PickupPointDAOImpl implements PickupPointDAO {
                 list.add(mapRowToPickupPoint(rs));
             }
         } catch (SQLException e) {
-            System.err.println("[PickupPointDAO] Error fetching active pickup points: " + e.getMessage());
+            System.err.println("Database error while retrieving pickup points. Please try again.");
         }
         return list;
     }
@@ -151,7 +151,7 @@ public class PickupPointDAOImpl implements PickupPointDAO {
 
             return pstmt.executeUpdate() > 0;
         } catch (SQLException e) {
-            System.err.println("[PickupPointDAO] Error updating pickup point: " + e.getMessage());
+            System.err.println("Database error while updating the pickup point. Please try again.");
         }
         return false;
     }
@@ -169,7 +169,7 @@ public class PickupPointDAOImpl implements PickupPointDAO {
             pstmt.setInt(1, pointId);
             return pstmt.executeUpdate() > 0;
         } catch (SQLException e) {
-            System.err.println("[PickupPointDAO] Error deleting pickup point: " + e.getMessage());
+            System.err.println("Database error while deleting the pickup point. Please try again.");
         }
         return false;
     }
@@ -188,7 +188,7 @@ public class PickupPointDAOImpl implements PickupPointDAO {
             pstmt.setInt(2, pointId);
             return pstmt.executeUpdate() > 0;
         } catch (SQLException e) {
-            System.err.println("[PickupPointDAO] Error setting active status: " + e.getMessage());
+            System.err.println("Database error while updating pickup point status. Please try again.");
         }
         return false;
     }
@@ -210,7 +210,7 @@ public class PickupPointDAOImpl implements PickupPointDAO {
                 }
             }
         } catch (SQLException e) {
-            System.err.println("[PickupPointDAO] Error counting active parcels at pickup point: " + e.getMessage());
+            System.err.println("Database error while checking pickup point parcels. Please try again.");
         }
         return 0;
     }

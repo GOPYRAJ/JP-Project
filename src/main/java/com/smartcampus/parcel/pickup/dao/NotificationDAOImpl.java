@@ -47,7 +47,7 @@ public class NotificationDAOImpl implements NotificationDAO {
                 return true;
             }
         } catch (SQLException e) {
-            System.err.println("[NotificationDAO] Error adding notification: " + e.getMessage());
+            System.err.println("Database error while saving the notification. Please try again.");
         }
         return false;
     }
@@ -70,7 +70,7 @@ public class NotificationDAOImpl implements NotificationDAO {
                 }
             }
         } catch (SQLException e) {
-            System.err.println("[NotificationDAO] Error finding notification by ID: " + e.getMessage());
+            System.err.println("Database error while retrieving notification. Please try again.");
         }
         return null;
     }
@@ -94,7 +94,7 @@ public class NotificationDAOImpl implements NotificationDAO {
                 }
             }
         } catch (SQLException e) {
-            System.err.println("[NotificationDAO] Error fetching notifications for user: " + e.getMessage());
+            System.err.println("Database error while retrieving notifications. Please try again.");
         }
         return list;
     }
@@ -118,7 +118,7 @@ public class NotificationDAOImpl implements NotificationDAO {
                 }
             }
         } catch (SQLException e) {
-            System.err.println("[NotificationDAO] Error fetching unread notifications for user: " + e.getMessage());
+            System.err.println("Database error while retrieving notifications. Please try again.");
         }
         return list;
     }
@@ -136,7 +136,7 @@ public class NotificationDAOImpl implements NotificationDAO {
             pstmt.setInt(1, notificationId);
             return pstmt.executeUpdate() > 0;
         } catch (SQLException e) {
-            System.err.println("[NotificationDAO] Error marking notification as read: " + e.getMessage());
+            System.err.println("Database error while updating notification. Please try again.");
         }
         return false;
     }
@@ -154,7 +154,7 @@ public class NotificationDAOImpl implements NotificationDAO {
             pstmt.setInt(1, userId);
             return pstmt.executeUpdate() > 0;
         } catch (SQLException e) {
-            System.err.println("[NotificationDAO] Error marking all notifications read: " + e.getMessage());
+            System.err.println("Database error while updating notifications. Please try again.");
         }
         return false;
     }
@@ -172,7 +172,7 @@ public class NotificationDAOImpl implements NotificationDAO {
             pstmt.setInt(1, notificationId);
             return pstmt.executeUpdate() > 0;
         } catch (SQLException e) {
-            System.err.println("[NotificationDAO] Error deleting notification: " + e.getMessage());
+            System.err.println("Database error while deleting notification. Please try again.");
         }
         return false;
     }
@@ -194,7 +194,7 @@ public class NotificationDAOImpl implements NotificationDAO {
                 }
             }
         } catch (SQLException e) {
-            System.err.println("[NotificationDAO] Error counting unread notifications: " + e.getMessage());
+            System.err.println("Database error while counting notifications. Please try again.");
         }
         return 0;
     }
@@ -216,7 +216,7 @@ public class NotificationDAOImpl implements NotificationDAO {
                 }
             }
         } catch (SQLException e) {
-            System.err.println("[NotificationDAO] Error verifying user existence: " + e.getMessage());
+            System.err.println("Database error while verifying user. Please try again.");
         }
         return false;
     }

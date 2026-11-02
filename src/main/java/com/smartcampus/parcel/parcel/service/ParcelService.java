@@ -2,7 +2,9 @@ package com.smartcampus.parcel.parcel.service;
 
 import com.smartcampus.parcel.parcel.dao.ParcelDAO;
 import com.smartcampus.parcel.parcel.model.Parcel;
+import com.smartcampus.parcel.pickup.model.PickupPoint;
 import com.smartcampus.parcel.pickup.service.NotificationService;
+import com.smartcampus.parcel.pickup.service.PickupPointService;
 import com.smartcampus.parcel.util.Constants;
 
 import java.math.BigDecimal;
@@ -19,6 +21,7 @@ public class ParcelService {
 
     private final ParcelDAO parcelDAO;
     private final NotificationService notificationService;
+    private final PickupPointService pickupPointService;
 
     /** Valid status values accepted by the parcels.status ENUM in schema.sql. */
     private static final Set<String> VALID_STATUSES = Set.of(
@@ -46,14 +49,19 @@ public class ParcelService {
     // -------------------------------------------------------
 
     public ParcelService() {
-        this.parcelDAO           = new ParcelDAO();
-        this.notificationService = new NotificationService();
+        this(new ParcelDAO(), new NotificationService(), new PickupPointService());
     }
 
     /** Constructor for testing / dependency injection. */
     public ParcelService(ParcelDAO parcelDAO, NotificationService notificationService) {
+        this(parcelDAO, notificationService, new PickupPointService());
+    }
+
+    public ParcelService(ParcelDAO parcelDAO, NotificationService notificationService,
+                         PickupPointService pickupPointService) {
         this.parcelDAO           = parcelDAO;
         this.notificationService = notificationService;
+        this.pickupPointService  = pickupPointService;
     }
 
     // -------------------------------------------------------
@@ -101,10 +109,19 @@ public class ParcelService {
                 throw new IllegalArgumentException(
                     "Recipient user ID " + recipientId + " does not exist.");
             }
-            // Verify pickup point exists
-            if (!parcelDAO.pickupPointExists(pickupPointId)) {
+            // Verify pickup point exists, is active, and has free capacity
+            PickupPoint point = pickupPointService.getPickupPointById(pickupPointId);
+            if (point == null) {
                 throw new IllegalArgumentException(
                     "Pickup point ID " + pickupPointId + " does not exist.");
+            }
+            if (!point.isActive()) {
+                throw new IllegalArgumentException(
+                    "Pickup point ID " + pickupPointId + " ('" + point.getName() + "') is inactive.");
+            }
+            if (!pickupPointService.hasFreeCapacity(pickupPointId)) {
+                throw new IllegalArgumentException(
+                    "Pickup point ID " + pickupPointId + " ('" + point.getName() + "') is full.");
             }
 
             Parcel parcel = new Parcel(trackingNo, senderName, courierCompany,
@@ -219,9 +236,14 @@ public class ParcelService {
                 throw new IllegalArgumentException(
                     "Recipient user ID " + parcel.getRecipientId() + " does not exist.");
             }
-            if (!parcelDAO.pickupPointExists(parcel.getPickupPointId())) {
+            PickupPoint point = pickupPointService.getPickupPointById(parcel.getPickupPointId());
+            if (point == null) {
                 throw new IllegalArgumentException(
                     "Pickup point ID " + parcel.getPickupPointId() + " does not exist.");
+            }
+            if (!point.isActive()) {
+                throw new IllegalArgumentException(
+                    "Pickup point ID " + parcel.getPickupPointId() + " ('" + point.getName() + "') is inactive.");
             }
             return parcelDAO.updateParcel(parcel);
         } catch (IllegalArgumentException e) {
