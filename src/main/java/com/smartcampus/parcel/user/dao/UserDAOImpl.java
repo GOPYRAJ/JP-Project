@@ -46,7 +46,7 @@ public class UserDAOImpl implements UserDAO {
                 return true;
             }
         } catch (SQLException e) {
-            System.err.println("[UserDAO] Error adding user: " + e.getMessage());
+            System.err.println("Database error while saving the user. Please try again.");
         }
         return false;
     }
@@ -69,7 +69,7 @@ public class UserDAOImpl implements UserDAO {
                 }
             }
         } catch (SQLException e) {
-            System.err.println("[UserDAO] Error finding user by ID: " + e.getMessage());
+            System.err.println("Database error while retrieving user. Please try again.");
         }
         return null;
     }
@@ -92,7 +92,7 @@ public class UserDAOImpl implements UserDAO {
                 }
             }
         } catch (SQLException e) {
-            System.err.println("[UserDAO] Error finding user by email: " + e.getMessage());
+            System.err.println("Database error while retrieving user. Please try again.");
         }
         return null;
     }
@@ -114,7 +114,7 @@ public class UserDAOImpl implements UserDAO {
                 list.add(mapRowToUser(rs));
             }
         } catch (SQLException e) {
-            System.err.println("[UserDAO] Error fetching all users: " + e.getMessage());
+            System.err.println("Database error while retrieving users. Please try again.");
         }
         return list;
     }
@@ -138,7 +138,7 @@ public class UserDAOImpl implements UserDAO {
                 }
             }
         } catch (SQLException e) {
-            System.err.println("[UserDAO] Error fetching users by role: " + e.getMessage());
+            System.err.println("Database error while retrieving users. Please try again.");
         }
         return list;
     }
@@ -175,7 +175,7 @@ public class UserDAOImpl implements UserDAO {
 
             return pstmt.executeUpdate() > 0;
         } catch (SQLException e) {
-            System.err.println("[UserDAO] Error updating user: " + e.getMessage());
+            System.err.println("Database error while updating the user. Please try again.");
         }
         return false;
     }
@@ -193,7 +193,7 @@ public class UserDAOImpl implements UserDAO {
             pstmt.setInt(1, userId);
             return pstmt.executeUpdate() > 0;
         } catch (SQLException e) {
-            System.err.println("[UserDAO] Error deleting user: " + e.getMessage());
+            System.err.println("Database error while deleting the user. Please try again.");
         }
         return false;
     }
@@ -215,7 +215,7 @@ public class UserDAOImpl implements UserDAO {
                 }
             }
         } catch (SQLException e) {
-            System.err.println("[UserDAO] Error checking email existence: " + e.getMessage());
+            System.err.println("Database error while checking email. Please try again.");
         }
         return false;
     }
@@ -237,7 +237,7 @@ public class UserDAOImpl implements UserDAO {
                 }
             }
         } catch (SQLException e) {
-            System.err.println("[UserDAO] Error counting active parcels: " + e.getMessage());
+            System.err.println("Database error while checking active parcels. Please try again.");
         }
         return 0;
     }
@@ -259,7 +259,7 @@ public class UserDAOImpl implements UserDAO {
                 }
             }
         } catch (SQLException e) {
-            System.err.println("[UserDAO] Error counting active deliveries: " + e.getMessage());
+            System.err.println("Database error while checking active deliveries. Please try again.");
         }
         return 0;
     }

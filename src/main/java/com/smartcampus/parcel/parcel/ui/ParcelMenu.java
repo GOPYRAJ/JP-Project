@@ -40,7 +40,7 @@ public class ParcelMenu {
         boolean back = false;
         while (!back) {
             printMenu();
-            int choice = InputUtil.readInt("Enter your choice (1-9)", 1, 9);
+            int choice = InputUtil.readInt("Enter your choice (0-8)", 0, 8);
             switch (choice) {
                 case 1 -> registerParcel();
                 case 2 -> viewAllParcels();
@@ -50,7 +50,7 @@ public class ParcelMenu {
                 case 6 -> updateParcelDetails();
                 case 7 -> updateParcelStatus();
                 case 8 -> deleteParcel();
-                case 9 -> back = true;
+                case 0 -> back = true;
                 default -> System.out.println("  [!] Invalid option. Please try again.");
             }
         }
@@ -70,18 +70,28 @@ public class ParcelMenu {
             String courierCo     = InputUtil.readString("  Courier Company");
             int recipientId      = InputUtil.readInt("  Recipient User ID");
             int pickupPointId    = InputUtil.readInt("  Pickup Point ID");
-            String weightStr     = InputUtil.readString("  Weight in kg (leave blank to skip)", true);
-            String description   = InputUtil.readString("  Description (leave blank to skip)", true);
-            int registeredBy     = InputUtil.readInt("  Registering Admin User ID");
-
             BigDecimal weight = null;
-            if (!weightStr.isBlank()) {
+            while (true) {
+                String weightStr = InputUtil.readString("  Weight in kg (leave blank to skip)", true);
+                if (weightStr.isBlank()) {
+                    weight = null;
+                    break;
+                }
                 try {
-                    weight = new BigDecimal(weightStr.trim());
+                    BigDecimal parsed = new BigDecimal(weightStr.trim());
+                    if (parsed.compareTo(BigDecimal.ZERO) < 0) {
+                        System.out.println("  [!] Weight cannot be negative. Please enter a valid weight or leave blank to skip.");
+                        continue;
+                    }
+                    weight = parsed;
+                    break;
                 } catch (NumberFormatException e) {
-                    System.out.println("  [!] Invalid weight value. Defaulting to null.");
+                    System.out.println("  [!] Invalid weight value. Please enter a valid number or leave blank to skip.");
                 }
             }
+
+            String description   = InputUtil.readString("  Description (leave blank to skip)", true);
+            int registeredBy     = InputUtil.readInt("  Registering Admin User ID");
 
             int newId = parcelService.registerParcel(trackingNo, senderName, courierCo,
                 recipientId, pickupPointId, weight, description.isBlank() ? null : description,
@@ -287,7 +297,7 @@ public class ParcelMenu {
         System.out.println("  6. Update parcel details");
         System.out.println("  7. Update parcel status");
         System.out.println("  8. Delete parcel");
-        System.out.println("  9. Return to main menu");
+        System.out.println("  0. Back to Main Menu");
         System.out.println("---------------------------------------------------------------");
     }
 

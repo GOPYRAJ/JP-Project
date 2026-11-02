@@ -133,18 +133,16 @@ public class DeliveryService {
             return "ERROR: Failed to save delivery assignment into database.";
         }
 
-        // Step 2: Update parcel status through ParcelService
+        // Step 2: Update parcel status through ParcelService (which appends to parcel_status_log)
         try {
-            parcelService.updateParcelStatus(parcelId, Constants.ParcelStatus.ASSIGNED);
+            int changer = changedBy != null ? changedBy : 0;
+            String remarks = "Delivery assigned to agent " + agent.getFullName() + " (ID #" + agentId + ")";
+            parcelService.updateParcelStatus(parcelId, Constants.ParcelStatus.ASSIGNED, changer, remarks);
         } catch (Exception e) {
             // Inconsistency handling: rollback newly created delivery record if parcel update fails
             deliveryDAO.deleteDelivery(delivery.getDeliveryId());
             return "ERROR: Failed to update parcel status: " + e.getMessage();
         }
-
-        // Step 3: Write status log row
-        statusLogDAO.addLog(parcelId, Constants.ParcelStatus.ASSIGNED, changedBy,
-                "Delivery assigned to agent " + agent.getFullName() + " (ID #" + agentId + ")");
 
         // Step 4: Notify recipient
         notificationService.send(parcel.getRecipientId(), parcelId,
@@ -214,20 +212,18 @@ public class DeliveryService {
             deliveryDAO.updateRemarks(deliveryId, remarks.trim());
         }
 
-        // Step 2: Update parcel status through ParcelService
+        // Step 2: Update parcel status through ParcelService (which appends to parcel_status_log)
+        String logRemarks = (remarks != null && !remarks.trim().isEmpty())
+                ? remarks.trim()
+                : "Delivery status updated to " + targetStatus;
         try {
-            parcelService.updateParcelStatus(delivery.getParcelId(), targetStatus);
+            int changer = changedBy != null ? changedBy : 0;
+            parcelService.updateParcelStatus(delivery.getParcelId(), targetStatus, changer, logRemarks);
         } catch (Exception e) {
             // Inconsistency handling: revert delivery status if parcel update fails
             deliveryDAO.updateDeliveryStatus(deliveryId, currentStatus);
             return "ERROR: Failed to update parcel status: " + e.getMessage();
         }
-
-        // Step 3: Write status log row
-        String logRemarks = (remarks != null && !remarks.trim().isEmpty())
-                ? remarks.trim()
-                : "Delivery status updated to " + targetStatus;
-        statusLogDAO.addLog(delivery.getParcelId(), targetStatus, changedBy, logRemarks);
 
         // Step 4: Dispatch notification to recipient
         Parcel parcel = parcelService.getParcelById(delivery.getParcelId());
@@ -283,16 +279,14 @@ public class DeliveryService {
             return "ERROR: Failed to delete delivery assignment #" + deliveryId + " from database.";
         }
 
-        // Step 2: Set parcel status back to RECEIVED via ParcelService
+        // Step 2: Set parcel status back to RECEIVED via ParcelService (which appends to parcel_status_log)
         try {
-            parcelService.updateParcelStatus(parcelId, Constants.ParcelStatus.RECEIVED);
+            int changer = changedBy != null ? changedBy : 0;
+            String cancelRemarks = "Delivery assignment #" + deliveryId + " cancelled; parcel reverted to RECEIVED";
+            parcelService.updateParcelStatus(parcelId, Constants.ParcelStatus.RECEIVED, changer, cancelRemarks);
         } catch (Exception e) {
             return "ERROR: Delivery assignment deleted, but failed to revert parcel status: " + e.getMessage();
         }
-
-        // Step 3: Write status log row
-        statusLogDAO.addLog(parcelId, Constants.ParcelStatus.RECEIVED, changedBy,
-                "Delivery assignment #" + deliveryId + " cancelled; parcel reverted to RECEIVED");
 
         return "SUCCESS: Delivery #" + deliveryId + " cancelled successfully. Parcel #" +
                parcelId + " reverted to RECEIVED.";

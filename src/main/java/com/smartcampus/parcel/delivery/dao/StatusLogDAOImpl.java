@@ -38,7 +38,7 @@ public class StatusLogDAOImpl implements StatusLogDAO {
 
             return pstmt.executeUpdate() > 0;
         } catch (SQLException e) {
-            System.err.println("[StatusLogDAO] Error inserting status log: " + e.getMessage());
+            System.err.println("Database error while saving status history. Please try again.");
         }
         return false;
     }
@@ -62,7 +62,7 @@ public class StatusLogDAOImpl implements StatusLogDAO {
                 }
             }
         } catch (SQLException e) {
-            System.err.println("[StatusLogDAO] Error fetching logs for parcel: " + e.getMessage());
+            System.err.println("Database error while retrieving status history. Please try again.");
         }
         return list;
     }

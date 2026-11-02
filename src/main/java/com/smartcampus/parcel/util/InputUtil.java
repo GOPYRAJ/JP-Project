@@ -35,6 +35,9 @@ public final class InputUtil {
     public static String readString(String prompt, boolean allowEmpty) {
         while (true) {
             System.out.print(prompt + ": ");
+            if (!SCANNER.hasNextLine()) {
+                return "";
+            }
             String input = SCANNER.nextLine();
             if (input != null) {
                 input = input.trim();
@@ -58,6 +61,9 @@ public final class InputUtil {
     public static int readInt(String prompt) {
         while (true) {
             System.out.print(prompt + ": ");
+            if (!SCANNER.hasNextLine()) {
+                return 0;
+            }
             String line = SCANNER.nextLine();
             if (line == null) {
                 continue;
@@ -80,6 +86,9 @@ public final class InputUtil {
      */
     public static int readInt(String prompt, int min, int max) {
         while (true) {
+            if (!SCANNER.hasNextLine()) {
+                return (min <= 0 && max >= 0) ? 0 : min;
+            }
             int value = readInt(prompt);
             if (value >= min && value <= max) {
                 return value;
@@ -97,6 +106,9 @@ public final class InputUtil {
     public static double readDouble(String prompt) {
         while (true) {
             System.out.print(prompt + ": ");
+            if (!SCANNER.hasNextLine()) {
+                return 0.0;
+            }
             String line = SCANNER.nextLine();
             if (line == null) {
                 continue;
@@ -118,6 +130,9 @@ public final class InputUtil {
      */
     public static double readDouble(String prompt, double min) {
         while (true) {
+            if (!SCANNER.hasNextLine()) {
+                return Math.max(0.0, min);
+            }
             double value = readDouble(prompt);
             if (value >= min) {
                 return value;
